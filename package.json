@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx wdio wdio.conf.js",
-    "assesment": "wdio wdio.conf.js --suite assesment"
+    "assessment": "wdio wdio.conf.js --suite assessment"
   },
   "author": "hridoy_das",
   "license": "ISC",
