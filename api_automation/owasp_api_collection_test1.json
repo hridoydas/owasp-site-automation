@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "984a5fe6-8e43-4fb5-b038-81e407c5a9da",
+		"name": "owasp_api_collection_test1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18212586"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"// console.log(responseJson.authentication.token);\r",
+							"\r",
+							"const auth_token = \"Bearer \"+responseJson.authentication.token;\r",
+							"pm.globals.set(\"bucket_id\", responseJson.authentication.bid);\r",
+							"pm.globals.set(\"auth_token\", auth_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"hridoy.das@yopmail.com\",\r\n    \"password\": \"Test@@00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://juice-shop.herokuapp.com/rest/user/login",
+					"protocol": "https",
+					"host": [
+						"juice-shop",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"rest",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_to_busket",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ProductId\": 2,\r\n    \"BasketId\": \"{{bucket_id}}\",\r\n    \"quantity\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://juice-shop.herokuapp.com/api/BasketItems",
+					"protocol": "https",
+					"host": [
+						"juice-shop",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"BasketItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check_busket",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"// console.log(\"item id: \"+ responseJson.data.Products[0].id)\r",
+							"for(let i=0; i<2; i++){\r",
+							"    // console.log(\"item id: \"+ responseJson.data.Products[i].id);\r",
+							"    if (responseJson.data.Products[i].id==2){\r",
+							"        throw new Error(\"Should not have more than one item\")\r",
+							"    }\r",
+							"    else{\r",
+							"        console.log(\"Only one item in busket\")\r",
+							"    }\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://juice-shop.herokuapp.com/rest/basket/{{bucket_id}}",
+					"protocol": "https",
+					"host": [
+						"juice-shop",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"rest",
+						"basket",
+						"{{bucket_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

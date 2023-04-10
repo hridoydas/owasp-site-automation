@@ -29,3 +29,10 @@ To run the both assessment parallelly in two chrome browser
 ```bash
   npm run test  
 ```
+
+Run API automation
+Step 1: Go to api_automation directory
+Step 2: Open both json file in postman
+Step 3: Run first collection "owasp_api_collection_test1" 
+Step 4: Delete previous items of busket from UI
+Step 5: Run second collection "owasp_api_collection_test2"
