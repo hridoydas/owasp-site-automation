@@ -26,12 +26,12 @@ exports.config = {
     //
     specs: [
         // './test/specs/**/*.js'
-        // address,
-        // search
-        [
-            address,
-            search
-        ]
+        address,
+        search
+        // [
+        //     address,
+        //     search
+        // ]
     ],
     suites:{
             assessment:[
